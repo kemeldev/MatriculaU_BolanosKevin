@@ -1,6 +1,19 @@
+using MatriculaU_BolanosKevin.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Add ApplicationDbContext with SQL Server connection
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add MVC services
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
