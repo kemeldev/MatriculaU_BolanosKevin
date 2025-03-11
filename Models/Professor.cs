@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-
 namespace MatriculaU_BolanosKevin.Models
 {
-    public class Student
+    public class Professor
     {
         public int Id { get; set; }  // Primary Key
 
@@ -22,7 +21,7 @@ namespace MatriculaU_BolanosKevin.Models
         [Required]
         public string PhoneNumber { get; set; }
 
-        // Many-to-Many Relationship: A student can enroll in many courses
+        // Relationship: A professor can teach multiple courses
         public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }
