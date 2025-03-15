@@ -22,6 +22,10 @@ namespace MatriculaU_BolanosKevin.Models
         [Required]
         public string PhoneNumber { get; set; }
 
+        // Relationship: A student belongs to one Career
+        public int? CareerId { get; set; }
+        public Career Career { get; set; }
+
         // Many-to-Many Relationship: A student can enroll in many courses
         public ICollection<Course> Courses { get; set; } = new List<Course>();
     }

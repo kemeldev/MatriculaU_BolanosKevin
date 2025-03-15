@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MatriculaU_BolanosKevin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250311013839_AddStudentCoursesRelationship")]
-    partial class AddStudentCoursesRelationship
+    [Migration("20250315143501_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,29 @@ namespace MatriculaU_BolanosKevin.Migrations
                     b.ToTable("StudentCourses", (string)null);
                 });
 
+            modelBuilder.Entity("MatriculaU_BolanosKevin.Models.Career", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Careers");
+                });
+
             modelBuilder.Entity("MatriculaU_BolanosKevin.Models.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -46,6 +69,9 @@ namespace MatriculaU_BolanosKevin.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CareerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -64,6 +90,8 @@ namespace MatriculaU_BolanosKevin.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CareerId");
 
                     b.HasIndex("ProfessorId");
 
@@ -109,6 +137,9 @@ namespace MatriculaU_BolanosKevin.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CareerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -128,6 +159,8 @@ namespace MatriculaU_BolanosKevin.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CareerId");
 
                     b.ToTable("Students");
                 });
@@ -149,13 +182,38 @@ namespace MatriculaU_BolanosKevin.Migrations
 
             modelBuilder.Entity("MatriculaU_BolanosKevin.Models.Course", b =>
                 {
+                    b.HasOne("MatriculaU_BolanosKevin.Models.Career", "Career")
+                        .WithMany("Courses")
+                        .HasForeignKey("CareerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MatriculaU_BolanosKevin.Models.Professor", "Professor")
                         .WithMany("Courses")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Career");
+
                     b.Navigation("Professor");
+                });
+
+            modelBuilder.Entity("MatriculaU_BolanosKevin.Models.Student", b =>
+                {
+                    b.HasOne("MatriculaU_BolanosKevin.Models.Career", "Career")
+                        .WithMany("Students")
+                        .HasForeignKey("CareerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Career");
+                });
+
+            modelBuilder.Entity("MatriculaU_BolanosKevin.Models.Career", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("MatriculaU_BolanosKevin.Models.Professor", b =>

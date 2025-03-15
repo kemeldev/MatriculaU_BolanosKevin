@@ -1,43 +1,28 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MatriculaU_BolanosKevin.Migrations
 {
     /// <inheritdoc />
-    public partial class AddStudentCoursesRelationship : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "DateOfBirth",
-                table: "Students");
-
-            migrationBuilder.DropColumn(
-                name: "DocumentNumber",
-                table: "Students");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "LastName",
-                table: "Students",
-                type: "nvarchar(100)",
-                maxLength: 100,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(20)",
-                oldMaxLength: 20);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "FirstName",
-                table: "Students",
-                type: "nvarchar(100)",
-                maxLength: 100,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(20)",
-                oldMaxLength: 20);
+            migrationBuilder.CreateTable(
+                name: "Careers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Careers", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Professors",
@@ -56,6 +41,29 @@ namespace MatriculaU_BolanosKevin.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CareerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_Careers_CareerId",
+                        column: x => x.CareerId,
+                        principalTable: "Careers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
                 {
@@ -64,11 +72,18 @@ namespace MatriculaU_BolanosKevin.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Credits = table.Column<int>(type: "int", nullable: false),
-                    ProfessorId = table.Column<int>(type: "int", nullable: false)
+                    ProfessorId = table.Column<int>(type: "int", nullable: false),
+                    CareerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Courses_Careers_CareerId",
+                        column: x => x.CareerId,
+                        principalTable: "Careers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Courses_Professors_ProfessorId",
                         column: x => x.ProfessorId,
@@ -102,6 +117,11 @@ namespace MatriculaU_BolanosKevin.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Courses_CareerId",
+                table: "Courses",
+                column: "CareerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Courses_ProfessorId",
                 table: "Courses",
                 column: "ProfessorId");
@@ -110,6 +130,11 @@ namespace MatriculaU_BolanosKevin.Migrations
                 name: "IX_StudentCourses_StudentsId",
                 table: "StudentCourses",
                 column: "StudentsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_CareerId",
+                table: "Students",
+                column: "CareerId");
         }
 
         /// <inheritdoc />
@@ -122,42 +147,13 @@ namespace MatriculaU_BolanosKevin.Migrations
                 name: "Courses");
 
             migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
                 name: "Professors");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "LastName",
-                table: "Students",
-                type: "nvarchar(20)",
-                maxLength: 20,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(100)",
-                oldMaxLength: 100);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "FirstName",
-                table: "Students",
-                type: "nvarchar(20)",
-                maxLength: 20,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(100)",
-                oldMaxLength: 100);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateOfBirth",
-                table: "Students",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<string>(
-                name: "DocumentNumber",
-                table: "Students",
-                type: "nvarchar(12)",
-                maxLength: 12,
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropTable(
+                name: "Careers");
         }
     }
 }

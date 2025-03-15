@@ -14,7 +14,8 @@ namespace MatriculaU_BolanosKevin.Data
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Professor> Professors { get; set; }
-        public DbSet<Course> Courses { get; set; }  // Added Courses
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Career> Careers { get; set; }  // Added Careers
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,6 +26,20 @@ namespace MatriculaU_BolanosKevin.Data
                 .HasMany(c => c.Students)
                 .WithMany(s => s.Courses)
                 .UsingEntity(j => j.ToTable("StudentCourses"));
+
+            // Define One-to-Many Relationship: Career -> Students
+            builder.Entity<Student>()
+                .HasOne(s => s.Career)
+                .WithMany(c => c.Students)
+                .HasForeignKey(s => s.CareerId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevents accidental cascade deletion
+
+            // Define One-to-Many Relationship: Career -> Courses
+            builder.Entity<Course>()
+                .HasOne(c => c.Career)
+                .WithMany(cr => cr.Courses)
+                .HasForeignKey(c => c.CareerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
