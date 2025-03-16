@@ -1,8 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";  // This will use the shared layout, which we'll update
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section">
+    <div class="hero-text">
+        <h1>Universidad Fidelitas</h1>
+        <h3>100% Virtual Careers</h3>
+        <a href="#register" class="btn btn-register">Register Now</a>
+    </div>
+    <div class="hero-image">
+        <img src="~/images/hero-image.png" alt="University Image">
+    </div>
 </div>
