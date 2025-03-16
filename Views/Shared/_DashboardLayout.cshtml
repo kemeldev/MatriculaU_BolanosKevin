@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;  // Remove this line if you are extending a layout (e.g., _Layout.cshtml)
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            background-color: #f8f9fa;
+            padding: 15px;
+        }
+
+        .content {
+            margin-left: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_Universidad_Fid%C3%A9litas.jpg" alt="University Logo" style="height: 50px;">
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text">Bienvenido, @User.Identity.Name</span> <!-- Assuming user info is stored in the identity -->
+                @* <span class="navbar-text">Rol: @User.FindFirstValue(ClaimTypes.Role)</span> <!-- Display role --> *@
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Menu -->
+            <div class="col-md-3 sidebar">
+                <h4>Menú</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="gestionEstudiantes">Gestión Estudiantes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="gestionProfesores">Gestión Profesores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="gestionAcademica">Gestión Académica</a>
+                        <ul class="nav flex-column ms-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="gestionCarreras">Carreras</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="gestionCursos">Cursos</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content (CRUD Section) -->
+            <div class="col-md-9 content">
+                <h3>Gestión Estudiantes</h3>
+                <div id="crudTable">
+                    <!-- This will be replaced with CRUD content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // You can later add JavaScript to dynamically load content for CRUD operations
+        document.getElementById('gestionEstudiantes').onclick = function() {
+            document.getElementById('crudTable').innerHTML = `
+                <h4>Lista de Estudiantes</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Carrera</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through students here and display -->
+                        <tr>
+                            <td>1</td>
+                            <td>Juan</td>
+                            <td>Pérez</td>
+                            <td>juan@demo.com</td>
+                            <td>123456789</td>
+                            <td>Ingeniería</td>
+                            <td>
+                                <button class="btn btn-info">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        };
+
+        // You can create similar logic for other sections like Profesores, Carreras, and Cursos.
+    </script>
+</body>
+</html>

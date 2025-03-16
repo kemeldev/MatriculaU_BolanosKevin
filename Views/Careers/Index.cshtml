@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MatriculaU_BolanosKevin.Models.Career>
+
+@{
+    ViewData["Title"] = "Careers";
+
+    <style>
+        body {
+            background-color: white !important;
+        }
+    </style>
+}
+
+<h2>Careers</h2>
+<a asp-action="Create" class="btn btn-success mb-2">Add New Career</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var career in Model)
+        {
+            <tr>
+                <td>@career.Id</td>
+                <td>@career.Name</td>
+                <td>@career.Code</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@career.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@career.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

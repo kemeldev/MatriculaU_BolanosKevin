@@ -1,41 +1,30 @@
 ﻿using MatriculaU_BolanosKevin.Data;
 using MatriculaU_BolanosKevin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatriculaU_BolanosKevin.Controllers
 {
-    public class CareerController : Controller
+    public class CareersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CareerController(ApplicationDbContext context)
+        public CareersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // List all careers
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var careers = _context.Careers.ToList();
+            var careers = await _context.Careers.ToListAsync();
             return View(careers);
         }
 
-        // Show career details
-        public IActionResult Details(int id)
-        {
-            var career = _context.Careers
-                .FirstOrDefault(c => c.Id == id);
-            if (career == null) return NotFound();
-            return View(career);
-        }
-
-        // Show form to create a new career
         public IActionResult Create()
         {
             return View();
         }
 
-        // Handle career creation
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Career career)
@@ -47,6 +36,48 @@ namespace MatriculaU_BolanosKevin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(career);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var career = await _context.Careers.FindAsync(id);
+            if (career == null) return NotFound();
+            return View(career);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Career career)
+        {
+            if (id != career.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(career);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(career);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var career = await _context.Careers.FindAsync(id);
+            if (career == null) return NotFound();
+            return View(career);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var career = await _context.Careers.FindAsync(id);
+            if (career != null)
+            {
+                _context.Careers.Remove(career);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
