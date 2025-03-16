@@ -1,0 +1,50 @@
+﻿@model MatriculaU_BolanosKevin.Models.Student
+
+@{
+    ViewData["Title"] = "Create Student";
+    <style>
+        body {
+            background-color: white !important;
+            color: black !important;
+        }
+    </style>
+}
+
+<h2>Create Student</h2>
+
+<form asp-action="Create">
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label">First Name</label>
+        <input asp-for="FirstName" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label">Last Name</label>
+        <input asp-for="LastName" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CareerId" class="form-label">Career</label>
+        <select asp-for="CareerId" asp-items="ViewBag.CareerId" class="form-control">
+            <option value="">-- Select Career --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Courses</label>
+        <select asp-for="Courses" asp-items="ViewBag.Courses" class="form-control" multiple></select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

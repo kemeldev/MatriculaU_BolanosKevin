@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MatriculaU_BolanosKevin.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+    <style>
+        body {
+            background-color: white !important;
+            color: black !important;
+        }
+    </style>
+}
+
+<h2>Courses</h2>
+<a asp-action="Create" class="btn btn-primary">Add New Course</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Credits</th>
+            <th>Career</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Code</td>
+                <td>@item.Credits</td>
+                <td>@item.Career?.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

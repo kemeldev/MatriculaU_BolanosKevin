@@ -1,0 +1,48 @@
+﻿@model MatriculaU_BolanosKevin.Models.Student
+
+@{
+    ViewData["Title"] = "Delete Student";
+    <style>
+        body {
+            background-color: white !important;
+            color: black !important;
+        }
+    </style>
+}
+
+<h2>Are you sure you want to delete this student?</h2>
+
+<div class="mb-3">
+    <strong>Name:</strong> @Model.FirstName @Model.LastName
+</div>
+<div class="mb-3">
+    <strong>Email:</strong> @Model.Email
+</div>
+<div class="mb-3">
+    <strong>Phone:</strong> @Model.PhoneNumber
+</div>
+<div class="mb-3">
+    <strong>Career:</strong> @Model.Career?.Name
+</div>
+<div class="mb-3">
+    <strong>Courses:</strong>
+    @if (Model.Courses.Any())
+    {
+        <ul>
+            @foreach (var course in Model.Courses)
+            {
+                <li>@course.Name</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <span>None</span>
+    }
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

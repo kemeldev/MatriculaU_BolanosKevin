@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MatriculaU_BolanosKevin.Models.Professor>
+
+@{
+    ViewData["Title"] = "Professors";
+    <style>
+        body {
+            background-color: white !important;
+            color: black !important;
+        }
+    </style>
+}
+
+<h1>Professors</h1>
+
+<p>
+    <a href="@Url.Action("Create", "Professors")" class="btn btn-primary">Create New Professor</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var professor in Model)
+        {
+            <tr>
+                <td>@professor.FirstName @professor.LastName</td>
+                <td>@professor.Email</td>
+                <td>@professor.PhoneNumber</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Professors", new { id = professor.Id })" class="btn btn-warning">Edit</a>
+                    <a href="@Url.Action("Delete", "Professors", new { id = professor.Id })" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

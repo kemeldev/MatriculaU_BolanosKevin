@@ -1,0 +1,29 @@
+﻿@model MatriculaU_BolanosKevin.Models.Professor
+
+@{
+    ViewData["Title"] = "Delete Professor";
+    <style>
+        body {
+            background-color: white !important;
+            color: black !important;
+        }
+    </style>
+}
+
+<h1>Delete Professor</h1>
+
+<h4>Are you sure you want to delete this professor?</h4>
+<hr />
+
+<div>
+    <h5>@Model.FirstName @Model.LastName</h5>
+    <p>Email: @Model.Email</p>
+    <p>Phone: @Model.PhoneNumber</p>
+</div>
+
+<form asp-action="DeleteConfirmed">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="@Url.Action("Index", "Professors")" class="btn btn-secondary">Cancel</a>
+</form>
+
